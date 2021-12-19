@@ -25,21 +25,50 @@ THEN I am again presented with current and future conditions for that city -->
     <title>Weather Dashboard</title>
   </head>
   <body>
-
     <header>
       <h1>Weather Dashboard</h1>
     </header>
 
-    <main>
-      <form id="search-city">
-       <label for="city">Search for a City:</label>
-       <input type="text" name="city" id="city-input">
-       <button type="submit" id="search-button">Search</button>
-      </form>
-
-      <section id="current-weather">
+    <main class = "container">
+      <section class="row">
+      <div
+        class="d-flex flex-column flex-shrink-0 p-3 bg-light col-md-4"
+        
+      >
+          
+          <span class="fs-4">Search for a City:</span>
+        </a>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li>
+            <form id="search-city">
+              <label for="city">Search for a City:</label>
+              <input type="text" name="city" id="city-input" />
+              <button type="submit" id="search-button">Search</button>
+            </form>
+          </li>
+        </ul>
+        <hr />
+      </div>
+    
+    <section class="col-md-8 justify-content-end">
+      <article id="current-weather">
         <h2>Current Weather in <span id="current-city"></span></h2>
+        <p id="current-data" class = "card"></p>
+      </article>
+      
+      <article id="forecast-weather" class = "col-md-8 container">
+        <h3>5 Day Forecast</h3>
+        <section class = "row">
+        <p id="forecast-day-1" class = "forecast-data card col"></p>
+        <p id="forecast-day-2" class="forecast-data card col"></p>
+        <p id="forecast-day-3" class="forecast-data card col"></p>
+        <p id="forecast-day-4" class="forecast-data card col"></p>
+        <p id="forecast-day-5" class="forecast-data card col"></p>
       </section>
+      </article>
+    </section>
+  </section>
     </main>
 
     <script
