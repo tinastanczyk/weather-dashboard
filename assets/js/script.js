@@ -1,6 +1,8 @@
 var APIKey = "7151747b5bb4270eae80aab638939860";
 var cityInput = document.getElementById("city-input");
 var searchFormEl = document.getElementById("search-city");
+var currentWeatherEl = document.getElementById("current-weather");
+var currentCityEl = document.getElementById("current-city");
 
 // This function gets the city name from the search input
 function getCityName(event) {
@@ -59,28 +61,9 @@ function getCityWeather(name, lat, lon) {
       if (response.ok) {
         console.log(response);
         response.json().then(function (data) {
-          var currentW = data.current.weather[0].main;
           console.log(data.daily);
-          for (let i = 0; i < 5; i++) {
-            // This logs the date of the five-day forecast
-            console.log(data.daily[i].dt);
-            var seconds = data.daily[i].dt;
-            var date = new Date(0);
-            date.setUTCSeconds(seconds);
-            console.log(date);
-            // This gets the temperature for the five day forecast
-            console.log(data.daily[i].temp.day);
-            var temp = data.daily[i].temp.day;
-            // This gets the humidity for the five day forecast
-            console.log(data.daily[i].humidity);
-            var hum = data.daily[i].humidity;
-            // This gets the wind speed for the five day forecast
-            console.log(data.daily[i].wind_speed);
-            var windSpeed = data.daily[i].wind_speed;
-            // This gets the UV Index for the five day forecast
-            console.log(data.daily[i].uvi);
-            var uvIndex = data.daily[i].uvi;
-          }
+          displayCurrent(data.daily, name);
+          // displayFiveDay(data.daily);
         });
       } else {
         alert("Error: " + response.statusText);
@@ -90,5 +73,52 @@ function getCityWeather(name, lat, lon) {
       alert("Unable to connect to Open Weather Map");
     });
 }
+
+function displayCurrent(daily, name) {
+  console.log(name);
+  currentCityEl.textContent = name;
+  // This logs the date of the five-day forecast
+  console.log(daily[0].dt);
+  var seconds = daily[0].dt;
+  var date = new Date(0);
+  date.setUTCSeconds(seconds);
+  console.log(date);
+  // This gets the temperature for the five day forecast
+  console.log(daily[0].temp.day);
+  var temp = daily[0].temp.day;
+  // This gets the humidity for the five day forecast
+  console.log(daily[0].humidity);
+  var hum = daily[0].humidity;
+  // This gets the wind speed for the five day forecast
+  console.log(daily[0].wind_speed);
+  var windSpeed = daily[0].wind_speed;
+  // This gets the UV Index for the five day forecast
+  console.log(daily[0].uvi);
+  var uvIndex = daily[0].uvi;
+}
+
+// function displayFiveDay(daily){
+// // 0 index is current day info
+// for (let i = 1; i < 6; i++) {
+//   // This logs the date of the five-day forecast
+//   console.log(data.daily[i].dt);
+//   var seconds = data.daily[i].dt;
+//   var date = new Date(0);
+//   date.setUTCSeconds(seconds);
+//   console.log(date);
+//   // This gets the temperature for the five day forecast
+//   console.log(data.daily[i].temp.day);
+//   var temp = data.daily[i].temp.day;
+//   // This gets the humidity for the five day forecast
+//   console.log(data.daily[i].humidity);
+//   var hum = data.daily[i].humidity;
+//   // This gets the wind speed for the five day forecast
+//   console.log(data.daily[i].wind_speed);
+//   var windSpeed = data.daily[i].wind_speed;
+//   // This gets the UV Index for the five day forecast
+//   console.log(data.daily[i].uvi);
+//   var uvIndex = data.daily[i].uvi;
+// }
+// }
 
 searchFormEl.addEventListener("submit", getCityName);
