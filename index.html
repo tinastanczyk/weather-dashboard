@@ -2,15 +2,15 @@
 <html lang="en">
   <!-- GIVEN a weather dashboard with form inputs
 WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
+√THEN I am presented with current and future conditions for that city and that city is added to the search history
 WHEN I view current weather conditions for that city
-THEN I am presented with the √city name, √the date, an icon representation of weather conditions, the √temperature, the √humidity, the √wind speed, and the √UV index
+√THEN I am presented with the √city name, √the date, an √icon representation of weather conditions, the √temperature, the √humidity, the √wind speed, and the √UV index
 WHEN I view the UV index
 THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
 WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
+√THEN I am presented with a 5-day forecast that displays the √date, an √icon representation of weather conditions, the √temperature, the √wind speed, and the √humidity
 WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city -->
+√THEN I am again presented with current and future conditions for that city -->
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -21,51 +21,52 @@ THEN I am again presented with current and future conditions for that city -->
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather Dashboard</title>
   </head>
   <body>
     <header>
-      <h1>Weather Dashboard</h1>
+      <h1><i class="fas fa-sun"></i>Weather Dashboard<i class="fas fa-sun"></i></h1>
     </header>
 
     <main class = "container">
       <section class="row">
       <div
-        class="d-flex flex-column flex-shrink-0 p-3 bg-light col-md-4"
+        class="d-flex flex-column flex-shrink-0 p-3 bg-light col-md-3"
         
       >
           
           <span class="fs-4">Search for a City:</span>
         </a>
         <hr />
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li>
-            <form id="search-city">
-              <label for="city">Search for a City:</label>
-              <input type="text" name="city" id="city-input" />
-              <button type="submit" id="search-button">Search</button>
-            </form>
-          </li>
+        <form id="search-city">
+          <label for="city">Search for a City:</label>
+          <input type="text" name="city" id="city-input"/>
+          <button type="submit" id="search-button">Search</button>
+        </form>
+        <ul id = "search-history" class="nav nav-pills flex-column mb-auto">
         </ul>
         <hr />
       </div>
     
-    <section class="col-md-8 justify-content-end">
+    <section class="col-md-9 justify-content-end">
       <article id="current-weather">
         <h2>Current Weather in <span id="current-city"></span></h2>
         <p id="current-data" class = "card"></p>
       </article>
       
-      <article id="forecast-weather" class = "col-md-8 container">
+      <article id="forecast-weather">
         <h3>5 Day Forecast</h3>
-        <section class = "row">
-        <p id="forecast-day-1" class = "forecast-data card col"></p>
+        <section class="container-fluid">
+        <section class = "row row-cols-5">
+        <p id="forecast-day-1" class ="forecast-data card col"></p>
         <p id="forecast-day-2" class="forecast-data card col"></p>
         <p id="forecast-day-3" class="forecast-data card col"></p>
         <p id="forecast-day-4" class="forecast-data card col"></p>
         <p id="forecast-day-5" class="forecast-data card col"></p>
       </section>
+    </section>
       </article>
     </section>
   </section>
@@ -76,6 +77,7 @@ THEN I am again presented with current and future conditions for that city -->
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script src="https://kit.fontawesome.com/81946359b0.js" crossorigin="anonymous"></script>
     <script src="./assets/js/script.js"></script>
   </body>
 </html>

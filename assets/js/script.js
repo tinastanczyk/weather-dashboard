@@ -1,6 +1,7 @@
 var APIKey = "7151747b5bb4270eae80aab638939860";
 var cityInput = document.getElementById("city-input");
 var searchFormEl = document.getElementById("search-city");
+var searchHistoryEl = document.getElementById("search-history");
 var currentWeatherEl = document.getElementById("current-weather");
 var currentDataEl = document.getElementById("current-data");
 var currentCityEl = document.getElementById("current-city");
@@ -25,6 +26,7 @@ function getCityName(event) {
   var city = cityInput.value.trim();
   // If the input is null then the function will alert to search a city name
   if (city) {
+    printSearchHistory(city);
     getCityCoordinates(city);
   } else {
     alert("Please search a city name");
@@ -35,7 +37,7 @@ function getCityName(event) {
 function getCityCoordinates(NameOfCity) {
   // The api url is concatenated to include the parameters of the city name from the input and my personalized api key
   apiURL =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     NameOfCity +
     "&limit=1&appid=" +
     APIKey;
@@ -125,12 +127,22 @@ function displayCurrent(daily, name) {
 
   uvEl.textContent = "UV Index: " + uvIndex;
   currentDataEl.appendChild(uvEl);
+
+  console.log(daily[0].weather[0].icon);
+  var iconCode = daily[0].weather[0].icon;
+  var iconSrc = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+  var iconImage = document.createElement("img");
+  iconImage.setAttribute("src", iconSrc);
+  iconImage.style.height = "50px";
+  iconImage.style.width = "50px";
+  iconImage.style.backgroundColor = "aqua";
+  currentDataEl.appendChild(iconImage);
 }
 
 function displayFiveDay(daily) {
-  
   // 0 index is current day info
   for (let i = 1; i < 6; i++) {
+    document.getElementById("forecast-day-" + i).textContent = "";
     // This logs the date of the five-day forecast
     console.log(daily[i].dt);
     var seconds = daily[i].dt;
@@ -139,32 +151,59 @@ function displayFiveDay(daily) {
     console.log(date);
     var fdataEl = document.createElement("h4");
     fdataEl.textContent = date;
-    document.getElementById("forecast-day-"+i).appendChild(fdataEl);
+    document.getElementById("forecast-day-" + i).appendChild(fdataEl);
     // This gets the temperature for the five day forecast
     console.log(daily[i].temp.day);
     var temp = daily[i].temp.day;
     var ftempEl = document.createElement("h5");
     ftempEl.textContent = "Temperature: " + temp;
-    document.getElementById("forecast-day-"+i).appendChild(ftempEl);
+    document.getElementById("forecast-day-" + i).appendChild(ftempEl);
     // This gets the humidity for the five day forecast
     console.log(daily[i].humidity);
     var hum = daily[i].humidity;
     var fhumEl = document.createElement("h5");
     fhumEl.textContent = "Humidity: " + hum;
-    document.getElementById("forecast-day-"+i).appendChild(fhumEl);
+    document.getElementById("forecast-day-" + i).appendChild(fhumEl);
     // This gets the wind speed for the five day forecast
     console.log(daily[i].wind_speed);
     var windSpeed = daily[i].wind_speed;
     var fwindEl = document.createElement("h5");
     fwindEl.textContent = "Windspeed: " + windSpeed;
-    document.getElementById("forecast-day-"+i).appendChild(fwindEl);
+    document.getElementById("forecast-day-" + i).appendChild(fwindEl);
     // This gets the UV Index for the five day forecast
     console.log(daily[i].uvi);
     var uvIndex = daily[i].uvi;
     var fuvEl = document.createElement("h5");
     fuvEl.textContent = "UV Index: " + uvIndex;
-    document.getElementById("forecast-day-"+i).appendChild(fuvEl);
+    document.getElementById("forecast-day-" + i).appendChild(fuvEl);
+    // This gets the icon from openweathermap's icon code
+    var ficonCode = daily[i].weather[0].icon;
+    var ficonSrc = "http://openweathermap.org/img/wn/" + ficonCode + ".png";
+    var ficonImage = document.createElement("img");
+    ficonImage.setAttribute("src", ficonSrc);
+    ficonImage.style.height = "50px";
+    ficonImage.style.width = "50px";
+    ficonImage.style.backgroundColor = "aqua";
+    document.getElementById("forecast-day-" + i).appendChild(ficonImage);
   }
+}
+// This function prints the city name in the search History and when one of the city's names are clicked, it shows that city's current and forecasted weather
+function printSearchHistory(name) {
+  var historyEl = document.createElement("li");
+  historyEl.textContent = name;
+  historyEl.setAttribute("id", name);
+  console.log();
+  searchHistoryEl.appendChild(historyEl);
+  historyEl.addEventListener("click", function (event) {
+    event.preventDefault();
+    var reSearch = event.target;
+    console.log(reSearch);
+    var s = reSearch.id;
+    console.log(s);
+    getCityCoordinates(s);
+  });
 }
 
 searchFormEl.addEventListener("submit", getCityName);
+
+getCityCoordinates("Philadelphia");
