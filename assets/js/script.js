@@ -18,7 +18,13 @@ var windEl = document.createElement("h5");
 windEl.textContent = "";
 var uvEl = document.createElement("h5");
 uvEl.textContent = "";
+var iconImage = document.createElement("img");
+iconImage.setAttribute("src", '');
 
+var cityHistory = [];
+if(localStorage.getItem("searchHistory")) {
+  cityHistory = JSON.parse(localStorage.getItem("searchHistory"))
+}
 // This function gets the city name from the search input
 function getCityName(event) {
   event.preventDefault();
@@ -26,13 +32,24 @@ function getCityName(event) {
   var city = cityInput.value.trim();
   // If the input is null then the function will alert to search a city name
   if (city) {
-    printSearchHistory(city);
+    // printSearchHistory(city);
+    addCityToHistory(city);
     getCityCoordinates(city);
   } else {
     alert("Please search a city name");
   }
 }
+function addCityToHistory(city) {
+  for (i=0; i<cityHistory.length; i++){
+    if(city.toLowerCase() == cityHistory[i].toLowerCase()){
+      return
+    }
+  }
 
+  cityHistory.push(city);
+  localStorage.setItem("searchHistory", JSON.stringify(cityHistory));
+  printSearchHistory();
+}
 // This function gets the city's coordinates from the api based on the search input
 function getCityCoordinates(NameOfCity) {
   // The api url is concatenated to include the parameters of the city name from the input and my personalized api key
@@ -41,6 +58,8 @@ function getCityCoordinates(NameOfCity) {
     NameOfCity +
     "&limit=1&appid=" +
     APIKey;
+
+  addCityToHistory(NameOfCity)
   // the fetch method
   fetch(apiURL)
     .then(function (response) {
@@ -51,6 +70,7 @@ function getCityCoordinates(NameOfCity) {
           var cityName = data[0].name;
           var cityLat = data[0].lat;
           var cityLon = data[0].lon;
+          console.log(data);
           // I pass in these variables to the function that gets the specific coordinate's weather data
           getCityWeather(cityName, cityLat, cityLon);
         });
@@ -131,7 +151,7 @@ function displayCurrent(daily, name) {
   console.log(daily[0].weather[0].icon);
   var iconCode = daily[0].weather[0].icon;
   var iconSrc = "http://openweathermap.org/img/wn/" + iconCode + ".png";
-  var iconImage = document.createElement("img");
+  
   iconImage.setAttribute("src", iconSrc);
   iconImage.style.height = "50px";
   iconImage.style.width = "50px";
@@ -188,22 +208,29 @@ function displayFiveDay(daily) {
   }
 }
 // This function prints the city name in the search History and when one of the city's names are clicked, it shows that city's current and forecasted weather
-function printSearchHistory(name) {
-  var historyEl = document.createElement("li");
-  historyEl.textContent = name;
-  historyEl.setAttribute("id", name);
-  console.log();
-  searchHistoryEl.appendChild(historyEl);
-  historyEl.addEventListener("click", function (event) {
-    event.preventDefault();
-    var reSearch = event.target;
-    console.log(reSearch);
-    var s = reSearch.id;
-    console.log(s);
-    getCityCoordinates(s);
-  });
+function printSearchHistory() {
+  var searchArray = JSON.parse(localStorage.getItem("searchHistory"));
+  console.log(searchArray);
+  searchHistoryEl.textContent = '';
+  for(let i = 0; i<searchArray.length; i++){
+    var historyEl = document.createElement('li');
+    historyEl.textContent = searchArray[i];
+    console.log(historyEl);
+    historyEl.setAttribute("id",searchArray[i]);
+    searchHistoryEl.appendChild(historyEl);
+    historyEl.addEventListener("click", function (event) {
+      event.preventDefault();
+      var reSearch = event.target;
+      console.log(reSearch);
+      var s = reSearch.id;
+      console.log(s);
+      getCityCoordinates(s);
+    });
+  }
+  
 }
 
 searchFormEl.addEventListener("submit", getCityName);
 
 getCityCoordinates("Philadelphia");
+printSearchHistory();
