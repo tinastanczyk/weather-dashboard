@@ -29,7 +29,6 @@ function getCityName(event) {
   var city = cityInput.value.trim();
   // If the input is null then the function will alert to search a city name
   if (city) {
-    // printSearchHistory(city);
     addCityToHistory(city);
     getCityCoordinates(city);
   } else {
