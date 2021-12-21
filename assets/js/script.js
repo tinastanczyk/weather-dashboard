@@ -201,6 +201,12 @@ function displayFiveDay(daily) {
     document.getElementById("forecast-day-" + i).appendChild(ficonImage);
   }
 }
+function changeOnHover(element){
+  element.style.color = "#fdebc5";
+}
+function changeOffHover(element){
+  element.style.color = "black";
+}
 // This function prints the city name in the search History and when one of the city's names are clicked, it shows that city's current and forecasted weather
 function printSearchHistory() {
   var searchArray = JSON.parse(localStorage.getItem("searchHistory"));
@@ -210,6 +216,8 @@ function printSearchHistory() {
       var historyEl = document.createElement("li");
       historyEl.textContent = searchArray[i];
       historyEl.setAttribute("id", searchArray[i]);
+      historyEl.setAttribute("onmouseover", "changeOnHover(this)");
+      historyEl.setAttribute("onmouseout", "changeOffHover(this)");
       searchHistoryEl.appendChild(historyEl);
       searchHistoryEl.style.cursor = "pointer";
       historyEl.addEventListener("click", function (event) {
