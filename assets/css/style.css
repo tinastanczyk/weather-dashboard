@@ -1,6 +1,17 @@
+body{
+  background-color: #fdebc5;
+}
 header {
   text-align: center;
-  background: linear-gradient(46deg, #ffc107, #0dcaf0);
+  background: linear-gradient(46deg, #fdebc5, #0dcaf0);
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.forecast-data{
+  border: #0dcaf0 2px solid;
+  border-radius: 8px;
 }
 h4{
   font-size: 16px;
@@ -10,4 +21,14 @@ h5{
 }
 img{
   align-self: center;
+}
+#searchSideBar{
+  background: linear-gradient(270deg, #fdebc5, #0dcaf0);
+}
+#current-data{
+  border: #0dcaf0 2px solid;
+  box-shadow: 3px 3px 3px 1px #0dcaf0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
 }
