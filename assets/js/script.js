@@ -108,12 +108,12 @@ function getCityWeather(name, lat, lon) {
     });
 }
 
-function indexRating(uvIndex){
-  if((uvIndex >= 0) && (uvIndex <= 2)){
+function indexRating(uvIndex) {
+  if (uvIndex >= 0 && uvIndex <= 2) {
     uvEl.style.backgroundColor = "green";
-  }else if((uvIndex > 2) && (uvIndex <= 7)){
+  } else if (uvIndex > 2 && uvIndex <= 7) {
     uvEl.style.backgroundColor = "yellow";
-  }else if(uvIndex > 7){
+  } else if (uvIndex > 7) {
     uvEl.style.backgroundColor = "red";
   }
 }
@@ -127,6 +127,7 @@ function displayCurrent(daily, name) {
   var seconds = daily[0].dt;
   var date = new Date(0);
   date.setUTCSeconds(seconds);
+  date.toString("MMM dd, yyyy");
   console.log(date);
 
   dataEl.textContent = date;
@@ -202,11 +203,11 @@ function displayFiveDay(daily) {
     var fuvIndex = daily[i].uvi;
     var fuvEl = document.createElement("h5");
     fuvEl.textContent = "UV Index: " + fuvIndex;
-    if((fuvIndex >= 0) && (fuvIndex <= 2)){
+    if (fuvIndex >= 0 && fuvIndex <= 2) {
       fuvEl.style.backgroundColor = "green";
-    }else if((fuvIndex > 2) && (fuvIndex <= 7)){
+    } else if (fuvIndex > 2 && fuvIndex <= 7) {
       fuvEl.style.backgroundColor = "yellow";
-    }else if(fuvIndex > 7){
+    } else if (fuvIndex > 7) {
       fuvEl.style.backgroundColor = "red";
     }
     document.getElementById("forecast-day-" + i).appendChild(fuvEl);
@@ -233,6 +234,7 @@ function printSearchHistory() {
       console.log(historyEl);
       historyEl.setAttribute("id", searchArray[i]);
       searchHistoryEl.appendChild(historyEl);
+      searchHistoryEl.style.cursor = "pointer";
       historyEl.addEventListener("click", function (event) {
         event.preventDefault();
         var reSearch = event.target;
@@ -242,8 +244,7 @@ function printSearchHistory() {
         getCityCoordinates(s);
       });
     }
-  }
-  else{
+  } else {
     return;
   }
 }

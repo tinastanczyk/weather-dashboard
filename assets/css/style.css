@@ -2,3 +2,12 @@ header {
   text-align: center;
   background: linear-gradient(46deg, #ffc107, #0dcaf0);
 }
+h4{
+  font-size: 16px;
+}
+h5{
+  font-size: 14px;
+}
+img{
+  align-self: center;
+}
