@@ -19,16 +19,15 @@ windEl.textContent = "";
 var uvEl = document.createElement("h5");
 uvEl.textContent = "";
 var iconImage = document.createElement("img");
-iconImage.setAttribute("src", '');
+iconImage.setAttribute("src", "");
 
 var cityHistory = [];
-if(localStorage.getItem("searchHistory")) {
-  cityHistory = JSON.parse(localStorage.getItem("searchHistory"))
+if (localStorage.getItem("searchHistory")) {
+  cityHistory = JSON.parse(localStorage.getItem("searchHistory"));
 }
 // This function gets the city name from the search input
 function getCityName(event) {
   event.preventDefault();
-
   var city = cityInput.value.trim();
   // If the input is null then the function will alert to search a city name
   if (city) {
@@ -40,12 +39,11 @@ function getCityName(event) {
   }
 }
 function addCityToHistory(city) {
-  for (i=0; i<cityHistory.length; i++){
-    if(city.toLowerCase() == cityHistory[i].toLowerCase()){
-      return
+  for (i = 0; i < cityHistory.length; i++) {
+    if (city.toLowerCase() == cityHistory[i].toLowerCase()) {
+      return;
     }
   }
-
   cityHistory.push(city);
   localStorage.setItem("searchHistory", JSON.stringify(cityHistory));
   printSearchHistory();
@@ -59,7 +57,7 @@ function getCityCoordinates(NameOfCity) {
     "&limit=1&appid=" +
     APIKey;
 
-  addCityToHistory(NameOfCity)
+  addCityToHistory(NameOfCity);
   // the fetch method
   fetch(apiURL)
     .then(function (response) {
@@ -110,6 +108,16 @@ function getCityWeather(name, lat, lon) {
     });
 }
 
+function indexRating(uvIndex){
+  if((uvIndex >= 0) && (uvIndex <= 2)){
+    uvEl.style.backgroundColor = "green";
+  }else if((uvIndex > 2) && (uvIndex <= 7)){
+    uvEl.style.backgroundColor = "yellow";
+  }else if(uvIndex > 7){
+    uvEl.style.backgroundColor = "red";
+  }
+}
+
 function displayCurrent(daily, name) {
   console.log(name);
   currentCityEl.textContent = name;
@@ -144,21 +152,20 @@ function displayCurrent(daily, name) {
   // This gets the UV Index for the five day forecast
   console.log(daily[0].uvi);
   var uvIndex = daily[0].uvi;
-
+  indexRating(uvIndex);
   uvEl.textContent = "UV Index: " + uvIndex;
   currentDataEl.appendChild(uvEl);
-
+  // This gets the icon from the openweathermap url and appends it as an image to each weather card
   console.log(daily[0].weather[0].icon);
   var iconCode = daily[0].weather[0].icon;
   var iconSrc = "http://openweathermap.org/img/wn/" + iconCode + ".png";
-  
   iconImage.setAttribute("src", iconSrc);
   iconImage.style.height = "50px";
   iconImage.style.width = "50px";
   iconImage.style.backgroundColor = "aqua";
   currentDataEl.appendChild(iconImage);
 }
-
+// This function displays the five-day forecast for each city searched
 function displayFiveDay(daily) {
   // 0 index is current day info
   for (let i = 1; i < 6; i++) {
@@ -192,9 +199,16 @@ function displayFiveDay(daily) {
     document.getElementById("forecast-day-" + i).appendChild(fwindEl);
     // This gets the UV Index for the five day forecast
     console.log(daily[i].uvi);
-    var uvIndex = daily[i].uvi;
+    var fuvIndex = daily[i].uvi;
     var fuvEl = document.createElement("h5");
-    fuvEl.textContent = "UV Index: " + uvIndex;
+    fuvEl.textContent = "UV Index: " + fuvIndex;
+    if((fuvIndex >= 0) && (fuvIndex <= 2)){
+      fuvEl.style.backgroundColor = "green";
+    }else if((fuvIndex > 2) && (fuvIndex <= 7)){
+      fuvEl.style.backgroundColor = "yellow";
+    }else if(fuvIndex > 7){
+      fuvEl.style.backgroundColor = "red";
+    }
     document.getElementById("forecast-day-" + i).appendChild(fuvEl);
     // This gets the icon from openweathermap's icon code
     var ficonCode = daily[i].weather[0].icon;
@@ -211,26 +225,30 @@ function displayFiveDay(daily) {
 function printSearchHistory() {
   var searchArray = JSON.parse(localStorage.getItem("searchHistory"));
   console.log(searchArray);
-  searchHistoryEl.textContent = '';
-  for(let i = 0; i<searchArray.length; i++){
-    var historyEl = document.createElement('li');
-    historyEl.textContent = searchArray[i];
-    console.log(historyEl);
-    historyEl.setAttribute("id",searchArray[i]);
-    searchHistoryEl.appendChild(historyEl);
-    historyEl.addEventListener("click", function (event) {
-      event.preventDefault();
-      var reSearch = event.target;
-      console.log(reSearch);
-      var s = reSearch.id;
-      console.log(s);
-      getCityCoordinates(s);
-    });
+  searchHistoryEl.textContent = "";
+  if (searchArray) {
+    for (let i = 0; i < searchArray.length; i++) {
+      var historyEl = document.createElement("li");
+      historyEl.textContent = searchArray[i];
+      console.log(historyEl);
+      historyEl.setAttribute("id", searchArray[i]);
+      searchHistoryEl.appendChild(historyEl);
+      historyEl.addEventListener("click", function (event) {
+        event.preventDefault();
+        var reSearch = event.target;
+        console.log(reSearch);
+        var s = reSearch.id;
+        console.log(s);
+        getCityCoordinates(s);
+      });
+    }
   }
-  
+  else{
+    return;
+  }
 }
 
 searchFormEl.addEventListener("submit", getCityName);
 
-getCityCoordinates("Philadelphia");
+// getCityCoordinates("Philadelphia");
 printSearchHistory();
